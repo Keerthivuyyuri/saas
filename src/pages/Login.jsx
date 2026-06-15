@@ -1,0 +1,144 @@
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { FaFacebookF, FaGoogle } from "react-icons/fa";
+import loginImage from "../assets/office.png";
+
+export default function Login({ onLogin, onSignupClick, onRecoverClick }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleLogin = () => {
+    setError("");
+
+    if (!email || !password) {
+      setError("Please enter email and password");
+      return;
+    }
+
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+
+    const existingUser = users.find(
+      (user) => user.email === email && user.password === password,
+    );
+
+    if (!existingUser) {
+      setError("Invalid email or password");
+      return;
+    }
+
+    onLogin();
+  };
+
+  return (
+    <div className="min-h-screen bg-[#e5e5e5] p-8">
+      <div className="max-w-[1350px] mx-auto bg-white min-h-[850px] grid grid-cols-[410px_1fr]">
+        <div className="flex flex-col items-center justify-center px-12">
+          <div className="w-20 h-20 rounded-full bg-[#5D5FEF] flex items-center justify-center mb-8">
+            <div className="w-12 h-8 border-t-2 border-white rounded-full relative">
+              <span className="absolute left-0 top-2 w-3 h-3 bg-white rounded-full"></span>
+              <span className="absolute left-6 top-[-4px] w-3 h-3 bg-white rounded-full"></span>
+              <span className="absolute right-0 top-2 w-3 h-3 bg-white rounded-full"></span>
+            </div>
+          </div>
+
+          <h1 className="text-[22px] font-semibold text-[#111139] mb-8">
+            Log in
+          </h1>
+
+          <div className="grid grid-cols-2 gap-4 w-full mb-6">
+            <button className="h-[44px] bg-[#f6f6f8] rounded-lg text-sm flex items-center justify-center gap-2">
+              <FaGoogle className="text-red-500" />
+              Google
+            </button>
+
+            <button className="h-[44px] bg-[#f6f6f8] rounded-lg text-sm flex items-center justify-center gap-2">
+              <FaFacebookF className="text-blue-600" />
+              Facebook
+            </button>
+          </div>
+
+          <div className="flex items-center w-full mb-6">
+            <div className="flex-1 h-px bg-gray-200"></div>
+            <span className="px-4 text-sm text-[#111139]">Or</span>
+            <div className="flex-1 h-px bg-gray-200"></div>
+          </div>
+
+          <div className="w-full mb-5">
+            <label className="text-sm text-[#111139]">Email Address</label>
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="example@gmail.com"
+              className="w-full h-[48px] bg-[#f6f6f8] rounded-lg mt-2 px-4 text-sm outline-none"
+            />
+          </div>
+
+          <div className="w-full h-[48px] bg-[#f6f6f8] rounded-lg mt-2 px-4 flex items-center">
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter password"
+              className="flex-1 bg-transparent outline-none text-sm"
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <EyeOff size={15} className="text-gray-400 cursor-pointer" />
+              ) : (
+                <Eye size={15} className="text-gray-400 cursor-pointer" />
+              )}
+            </button>
+          </div>
+
+          {error && <p className="w-full text-red-500 text-sm mb-4">{error}</p>}
+
+          <div className="w-full flex items-center justify-between mb-8">
+            <label className="text-sm text-[#111139] flex items-center gap-2">
+              <input type="checkbox" />
+              Remember me
+            </label>
+
+            <button
+              type="button"
+              onClick={onRecoverClick}
+              className="text-sm text-[#5D5FEF]"
+            >
+              Reset Password?
+            </button>
+          </div>
+
+          <button
+            onClick={handleLogin}
+            className="w-full h-[48px] bg-[#5D5FEF] text-white rounded-lg text-sm mb-8"
+          >
+            Log in
+          </button>
+
+          <p className="text-sm text-[#111139]">
+            Don’t have account yet?{" "}
+            <span
+              onClick={onSignupClick}
+              className="text-[#5D5FEF] cursor-pointer hover:underline"
+            >
+              New Account
+            </span>
+          </p>
+        </div>
+
+        <div className="bg-[#fbfbfc] flex items-center justify-center">
+          <img
+            src={loginImage}
+            alt="Login Illustration"
+            className="w-[600px]"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
