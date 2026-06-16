@@ -108,12 +108,14 @@ export default function CalendarPage({ setActivePage }) {
   };
 
   return (
-    <div className="relative bg-[#fafbff] min-h-screen px-8 py-8">
+    <div className="relative bg-[#fafbff] min-h-screen px-4 sm:px-6 lg:px-8 py-6 lg:py-8 overflow-x-hidden">
       <div className={showEventModal ? "opacity-40 pointer-events-none" : ""}>
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-[26px] font-bold text-[#111139]">Calendar</h1>
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-8">
+          <h1 className="text-[22px] sm:text-[24px] lg:text-[26px] font-bold text-[#111139]">
+            Calendar
+          </h1>
 
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-3 sm:gap-4">
             {["Day", "Week", "Month", "Year"].map((item) => (
               <button
                 key={item}
@@ -130,7 +132,7 @@ export default function CalendarPage({ setActivePage }) {
           </div>
         </div>
 
-        <div className="grid grid-cols-[260px_1fr] gap-8">
+        <div className="grid grid-cols-1 xl:grid-cols-[260px_1fr] gap-8">
           <LeftPanel
             setActivePage={setActivePage}
             selectedYear={selectedYear}
@@ -138,7 +140,7 @@ export default function CalendarPage({ setActivePage }) {
             setShowEventModal={setShowEventModal}
           />
 
-          <div className="bg-white rounded-xl p-5">
+          <div className="bg-white rounded-xl p-4 sm:p-5 min-w-0">
             <CalendarHeader
               view={view}
               selectedYear={selectedYear}
@@ -190,7 +192,7 @@ function LeftPanel({
   const today = new Date();
 
   return (
-    <div>
+    <div className="min-w-0">
       <button
         onClick={() => setShowEventModal(true)}
         className="w-full h-[50px] bg-[#5D5FEF] text-white rounded-lg flex items-center justify-center gap-2 text-sm mb-6"
@@ -247,7 +249,7 @@ function LeftPanel({
         <Search size={15} className="text-gray-400" />
         <input
           placeholder="Search for People"
-          className="outline-none text-xs text-gray-400 w-full bg-transparent"
+          className="outline-none text-xs text-gray-400 w-full bg-transparent min-w-0"
         />
       </div>
 
@@ -260,13 +262,15 @@ function LeftPanel({
             <img
               src={person.img}
               alt=""
-              className="w-9 h-9 rounded-full object-cover"
+              className="w-9 h-9 rounded-full object-cover shrink-0"
             />
-            <div>
-              <p className="text-xs font-semibold text-[#111139]">
+            <div className="min-w-0">
+              <p className="text-xs font-semibold text-[#111139] truncate">
                 {person.name}
               </p>
-              <p className="text-[10px] text-gray-400">{person.email}</p>
+              <p className="text-[10px] text-gray-400 truncate">
+                {person.email}
+              </p>
             </div>
           </div>
         ))}
@@ -274,7 +278,7 @@ function LeftPanel({
 
       <button
         onClick={() => setActivePage && setActivePage("TaskList")}
-        className="w-full h-[48px] bg-white border border-indigo-100 text-[#5D5FEF] rounded-lg text-sm mt-[90px]"
+        className="w-full h-[48px] bg-white border border-indigo-100 text-[#5D5FEF] rounded-lg text-sm mt-8 xl:mt-[90px]"
       >
         My Schedule
       </button>
@@ -290,8 +294,8 @@ function CalendarHeader({
   handleNext,
 }) {
   return (
-    <div className="flex items-center justify-between mb-5">
-      <p className="font-semibold text-[#111139]">
+    <div className="flex items-center justify-between gap-4 mb-5">
+      <p className="font-semibold text-[#111139] text-sm sm:text-base">
         {view === "Year"
           ? selectedYear
           : `${monthNames[selectedMonth]} ${selectedYear}`}
@@ -315,66 +319,68 @@ function MonthView({ selectedYear, selectedMonth }) {
   const today = new Date();
 
   return (
-    <div className="grid grid-cols-7">
-      {weekNames.map((day) => (
-        <div
-          key={day}
-          className="h-[48px] flex items-center justify-center text-sm font-semibold text-[#111139]"
-        >
-          {day}
-        </div>
-      ))}
-
-      {days.map((item, index) => {
-        const isToday =
-          item.currentMonth &&
-          item.day === today.getDate() &&
-          selectedMonth === today.getMonth() &&
-          selectedYear === today.getFullYear();
-
-        return (
+    <div className="overflow-x-auto">
+      <div className="min-w-[760px] grid grid-cols-7">
+        {weekNames.map((day) => (
           <div
-            key={index}
-            className="h-[120px] border border-[#f0f0f5] p-3 text-[22px] text-[#555a7b] relative"
+            key={day}
+            className="h-[48px] flex items-center justify-center text-sm font-semibold text-[#111139]"
           >
-            <span
-              className={
-                isToday
-                  ? "w-8 h-8 rounded-full bg-[#5D5FEF] text-white flex items-center justify-center"
-                  : item.currentMonth
-                  ? ""
-                  : "text-gray-300"
-              }
-            >
-              {String(item.day).padStart(2, "0")}
-            </span>
-
-            {item.currentMonth && item.day === 2 && (
-              <>
-                <p className="bg-[#20BCD8] text-white text-[10px] px-2 py-1 rounded mt-2">
-                  Free day
-                </p>
-                <p className="bg-[#E941D6] text-white text-[10px] px-2 py-1 rounded mt-1">
-                  Party Time
-                </p>
-                <p className="text-[#5D5FEF] text-[10px] px-2 mt-1">More</p>
-              </>
-            )}
-
-            {item.currentMonth && item.day === 16 && (
-              <Event color="bg-[#ff8b6b]" text="Victory day" />
-            )}
-
-            {item.currentMonth && item.day === 21 && (
-              <Event color="bg-[#E941D6]" text="friend's Birthday" />
-            )}
-
-            {item.currentMonth && item.day === 25 && (
-              <Event color="bg-[#20AFCB]" text="Christmas Day" />
-            )}
+            {day}
           </div>
-        );
-      })}
+        ))}
+
+        {days.map((item, index) => {
+          const isToday =
+            item.currentMonth &&
+            item.day === today.getDate() &&
+            selectedMonth === today.getMonth() &&
+            selectedYear === today.getFullYear();
+
+          return (
+            <div
+              key={index}
+              className="h-[110px] sm:h-[120px] border border-[#f0f0f5] p-3 text-[20px] sm:text-[22px] text-[#555a7b] relative"
+            >
+              <span
+                className={
+                  isToday
+                    ? "w-8 h-8 rounded-full bg-[#5D5FEF] text-white flex items-center justify-center"
+                    : item.currentMonth
+                    ? ""
+                    : "text-gray-300"
+                }
+              >
+                {String(item.day).padStart(2, "0")}
+              </span>
+
+              {item.currentMonth && item.day === 2 && (
+                <>
+                  <p className="bg-[#20BCD8] text-white text-[10px] px-2 py-1 rounded mt-2">
+                    Free day
+                  </p>
+                  <p className="bg-[#E941D6] text-white text-[10px] px-2 py-1 rounded mt-1">
+                    Party Time
+                  </p>
+                  <p className="text-[#5D5FEF] text-[10px] px-2 mt-1">More</p>
+                </>
+              )}
+
+              {item.currentMonth && item.day === 16 && (
+                <Event color="bg-[#ff8b6b]" text="Victory day" />
+              )}
+
+              {item.currentMonth && item.day === 21 && (
+                <Event color="bg-[#E941D6]" text="friend's Birthday" />
+              )}
+
+              {item.currentMonth && item.day === 25 && (
+                <Event color="bg-[#20AFCB]" text="Christmas Day" />
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
@@ -383,7 +389,7 @@ function YearView({ selectedYear }) {
   const today = new Date();
 
   return (
-    <div className="grid grid-cols-3 gap-x-10 gap-y-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-8 lg:gap-x-10 gap-y-8">
       {monthNames.map((month, monthIndex) => {
         const days = getCalendarDays(selectedYear, monthIndex);
 
@@ -442,41 +448,41 @@ function WeekView({ selectedYear, selectedMonth }) {
   const times = ["09 AM", "10 AM", "11 AM", "12 PM", "01 PM", "02 PM", "03 PM"];
 
   return (
-    <div className="grid grid-cols-[80px_repeat(7,1fr)] border border-[#f0f0f5]">
-      <div className="border p-4"></div>
+    <div className="overflow-x-auto">
+      <div className="min-w-[900px] grid grid-cols-[80px_repeat(7,1fr)] border border-[#f0f0f5]">
+        <div className="border p-4"></div>
 
-      {weekDates.map((item) => (
-        <div
-          key={item.date}
-          className="border p-4 text-center font-semibold text-[#111139]"
-        >
-          {item.day} {item.date}
-        </div>
-      ))}
-
-      {times.map((time, row) => (
-        <>
-          <div key={time} className="border p-4 text-xs text-gray-400">
-            {time}
+        {weekDates.map((item) => (
+          <div
+            key={item.date}
+            className="border p-4 text-center font-semibold text-[#111139]"
+          >
+            {item.day} {item.date}
           </div>
+        ))}
 
-          {weekDates.map((day, col) => (
-            <div key={`${time}-${day.date}`} className="h-[75px] border p-2">
-              {row === 1 && col === 1 && (
-                <div className="bg-[#5D5FEF] text-white rounded-lg p-2 text-xs">
-                  Team Meeting
-                </div>
-              )}
+        {times.map((time, row) => (
+          <div className="contents" key={time}>
+            <div className="border p-4 text-xs text-gray-400">{time}</div>
 
-              {row === 3 && col === 4 && (
-                <div className="bg-[#20BCD8] text-white rounded-lg p-2 text-xs">
-                  Design Review
-                </div>
-              )}
-            </div>
-          ))}
-        </>
-      ))}
+            {weekDates.map((day, col) => (
+              <div key={`${time}-${day.date}`} className="h-[75px] border p-2">
+                {row === 1 && col === 1 && (
+                  <div className="bg-[#5D5FEF] text-white rounded-lg p-2 text-xs">
+                    Team Meeting
+                  </div>
+                )}
+
+                {row === 3 && col === 4 && (
+                  <div className="bg-[#20BCD8] text-white rounded-lg p-2 text-xs">
+                    Design Review
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -484,7 +490,6 @@ function WeekView({ selectedYear, selectedMonth }) {
 function DayView() {
   const dayEvents = [
     {
-      time: "09:00 AM",
       title: "Invited by Friends",
       color: "bg-[#ff8b6b]",
       top: 18,
@@ -492,7 +497,6 @@ function DayView() {
       width: 150,
     },
     {
-      time: "12:00 PM",
       title: "Prayer Time",
       color: "bg-[#20BCD8]",
       top: 145,
@@ -500,7 +504,6 @@ function DayView() {
       width: 150,
     },
     {
-      time: "02:00 PM",
       title: "Lunch Time",
       color: "bg-[#ff8b6b]",
       top: 245,
@@ -508,7 +511,6 @@ function DayView() {
       width: 150,
     },
     {
-      time: "06:00 PM",
       title: "Prayer Time",
       color: "bg-[#34A853]",
       top: 450,
@@ -516,7 +518,6 @@ function DayView() {
       width: 150,
     },
     {
-      time: "09:00 PM",
       title: "Dinner Time",
       color: "bg-[#5D5FEF]",
       top: 585,
@@ -546,58 +547,64 @@ function DayView() {
   ];
 
   return (
-    <div className="relative h-[720px] overflow-hidden">
-      {times.map((time) => (
-        <div
-          key={time}
-          className="h-[42px] border-t border-[#eef0f7] relative"
-        >
-          <span className="absolute left-0 top-[-8px] text-[10px] text-gray-400">
-            {time}
-          </span>
-        </div>
-      ))}
+    <div className="overflow-x-auto">
+      <div className="relative h-[720px] min-w-[780px] overflow-hidden">
+        {times.map((time) => (
+          <div
+            key={time}
+            className="h-[42px] border-t border-[#eef0f7] relative"
+          >
+            <span className="absolute left-0 top-[-8px] text-[10px] text-gray-400">
+              {time}
+            </span>
+          </div>
+        ))}
 
-      {dayEvents.map((event, index) => (
-        <div
-          key={index}
-          className={`absolute h-[34px] rounded-lg ${event.color} text-white text-xs flex items-center justify-center`}
-          style={{
-            top: `${event.top}px`,
-            left: `${event.left}px`,
-            width: `${event.width}px`,
-          }}
-        >
-          {event.title}
-        </div>
-      ))}
+        {dayEvents.map((event, index) => (
+          <div
+            key={index}
+            className={`absolute h-[34px] rounded-lg ${event.color} text-white text-xs flex items-center justify-center`}
+            style={{
+              top: `${event.top}px`,
+              left: `${event.left}px`,
+              width: `${event.width}px`,
+            }}
+          >
+            {event.title}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
 
 function CreateEventModal({ onClose }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1b1b35]/30">
-      <div className="w-[470px] bg-white rounded-xl shadow-2xl p-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#1b1b35]/30 px-4">
+      <div className="w-full max-w-[470px] bg-white rounded-xl shadow-2xl p-5 sm:p-8 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-7">
-          <h2 className="text-xl font-bold text-[#111139]">
+          <h2 className="text-lg sm:text-xl font-bold text-[#111139]">
             Create an Event
           </h2>
 
           <button
             onClick={onClose}
-            className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center"
+            className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center shrink-0"
           >
             <X size={18} className="text-red-400" />
           </button>
         </div>
 
-        <div className="flex bg-[#fafafa] rounded-lg mb-6 w-fit">
-          <button className="px-7 py-3 rounded-lg bg-[#ff8b6b] text-white text-sm">
+        <div className="flex flex-wrap bg-[#fafafa] rounded-lg mb-6 w-fit">
+          <button className="px-6 sm:px-7 py-3 rounded-lg bg-[#ff8b6b] text-white text-sm">
             Event
           </button>
-          <button className="px-7 py-3 text-sm text-gray-500">Reminder</button>
-          <button className="px-7 py-3 text-sm text-gray-500">Task</button>
+          <button className="px-6 sm:px-7 py-3 text-sm text-gray-500">
+            Reminder
+          </button>
+          <button className="px-6 sm:px-7 py-3 text-sm text-gray-500">
+            Task
+          </button>
         </div>
 
         <input
@@ -606,14 +613,16 @@ function CreateEventModal({ onClose }) {
         />
 
         <div className="flex gap-4 mb-6">
-          <div className="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
             <Clock size={17} className="text-orange-400" />
           </div>
 
-          <div>
+          <div className="min-w-0">
             <p className="text-sm font-semibold text-[#111139]">
               Thursday, December 5
-              <span className="font-normal ml-6">12:00pm - 1:00pm</span>
+              <span className="block sm:inline font-normal sm:ml-6 mt-1 sm:mt-0">
+                12:00pm - 1:00pm
+              </span>
             </p>
             <p className="text-xs text-gray-400 mt-1">
               Time zone · Does not repeat
@@ -622,20 +631,20 @@ function CreateEventModal({ onClose }) {
           </div>
         </div>
 
-        <div className="flex gap-5 mb-7">
-          <button className="h-[44px] px-7 rounded-lg bg-[#5D5FEF] text-white text-sm flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 mb-7">
+          <button className="h-[44px] px-7 rounded-lg bg-[#5D5FEF] text-white text-sm flex items-center justify-center gap-2">
             <Users size={16} />
             Add People
           </button>
 
-          <button className="h-[44px] px-7 rounded-lg border border-indigo-100 text-[#5D5FEF] text-sm flex items-center gap-2">
+          <button className="h-[44px] px-7 rounded-lg border border-indigo-100 text-[#5D5FEF] text-sm flex items-center justify-center gap-2">
             <MapPin size={16} />
             Add location
           </button>
         </div>
 
         <div className="flex gap-4 mb-8">
-          <div className="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
             <CalendarDays size={17} className="text-orange-400" />
           </div>
 
@@ -647,7 +656,7 @@ function CreateEventModal({ onClose }) {
           </div>
         </div>
 
-        <div className="flex justify-end gap-5">
+        <div className="flex justify-end gap-4 sm:gap-5">
           <button
             onClick={onClose}
             className="w-[90px] h-[42px] rounded-lg border border-indigo-100 text-[#5D5FEF] text-sm"

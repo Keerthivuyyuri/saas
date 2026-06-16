@@ -26,7 +26,6 @@ export default function Signup({ onSignup, onLoginClick }) {
     }
 
     const users = JSON.parse(localStorage.getItem("users")) || [];
-
     const existingUser = users.find((user) => user.email === email);
 
     if (existingUser) {
@@ -34,23 +33,16 @@ export default function Signup({ onSignup, onLoginClick }) {
       return;
     }
 
-    const newUser = {
-      fullName,
-      email,
-      username,
-      password,
-    };
-
-    users.push(newUser);
+    users.push({ fullName, email, username, password });
     localStorage.setItem("users", JSON.stringify(users));
 
     onSignup();
   };
 
   return (
-    <div className="min-h-screen bg-[#e5e5e5] p-6">
-      <div className="max-w-[1080px] mx-auto bg-white min-h-[820px] grid grid-cols-[330px_1fr]">
-        <div className="flex flex-col items-center justify-center px-10">
+    <div className="min-h-screen bg-[#e5e5e5] p-3 sm:p-6">
+      <div className="max-w-[1080px] mx-auto bg-white min-h-screen md:min-h-[820px] grid grid-cols-1 md:grid-cols-[330px_1fr]">
+        <div className="flex flex-col items-center justify-center px-6 sm:px-10 py-10">
           <div className="w-16 h-16 rounded-full bg-[#5D5FEF] flex items-center justify-center mb-6">
             <div className="w-10 h-6 border-t-2 border-white rounded-full relative">
               <span className="absolute left-0 top-2 w-2.5 h-2.5 bg-white rounded-full" />
@@ -63,7 +55,7 @@ export default function Signup({ onSignup, onLoginClick }) {
             Sign Up
           </h1>
 
-          <div className="grid grid-cols-2 gap-4 w-full mb-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full mb-5">
             <button className="h-[38px] bg-[#f6f6f8] rounded-md text-xs flex items-center justify-center gap-2">
               <FaGoogle className="text-red-500" />
               Google
@@ -111,25 +103,29 @@ export default function Signup({ onSignup, onLoginClick }) {
             />
           </div>
 
-          <div className="w-full h-[42px] bg-[#f6f6f8] rounded-md mt-2 px-4 flex items-center">
-            <input
-              type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter password"
-              className="flex-1 bg-transparent outline-none text-xs"
-            />
+          <div className="w-full mb-4">
+            <label className="text-xs text-[#111139]">Password</label>
 
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? (
-                <EyeOff size={14} className="text-gray-400 cursor-pointer" />
-              ) : (
-                <Eye size={14} className="text-gray-400 cursor-pointer" />
-              )}
-            </button>
+            <div className="w-full h-[42px] bg-[#f6f6f8] rounded-md mt-2 px-4 flex items-center">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter password"
+                className="flex-1 bg-transparent outline-none text-xs min-w-0"
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <EyeOff size={14} className="text-gray-400 cursor-pointer" />
+                ) : (
+                  <Eye size={14} className="text-gray-400 cursor-pointer" />
+                )}
+              </button>
+            </div>
           </div>
 
           <label className="w-full text-xs text-[#111139] flex items-start gap-2 mb-4">
@@ -163,12 +159,12 @@ export default function Signup({ onSignup, onLoginClick }) {
           </p>
         </div>
 
-        <div className="bg-[#fbfbfc] flex items-center justify-center">
+        <div className="hidden md:flex bg-[#fbfbfc] items-center justify-center p-6">
           <img
-                      src={InterviewImage}
-                      alt="signup"
-                      className="w-[620px]"
-                    />
+            src={InterviewImage}
+            alt="signup"
+            className="w-full max-w-[620px]"
+          />
         </div>
       </div>
     </div>
