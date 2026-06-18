@@ -18,21 +18,22 @@ import Confirm from "./pages/Confirm";
 import ChatPage from "./pages/ChatPage";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    localStorage.getItem("isLoggedIn") === "true"
+  );
+
   const [authPage, setAuthPage] = useState("login");
   const [activePage, setActivePage] = useState("Dashboard");
   const [showSidebar, setShowSidebar] = useState(false);
   const [messagesViewed, setMessagesViewed] = useState(false);
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "auto",
-    });
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   };
 
   const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+
     setIsLoggedIn(false);
     setAuthPage("login");
     setActivePage("Dashboard");
@@ -56,8 +57,11 @@ function App() {
   };
 
   const handleLogin = () => {
+    localStorage.setItem("isLoggedIn", "true");
+
     setIsLoggedIn(true);
     setActivePage("Dashboard");
+    setShowSidebar(false);
     scrollToTop();
   };
 
