@@ -22,26 +22,52 @@ function App() {
   const [authPage, setAuthPage] = useState("login");
   const [activePage, setActivePage] = useState("Dashboard");
   const [showSidebar, setShowSidebar] = useState(false);
+  const [messagesViewed, setMessagesViewed] = useState(false);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "auto",
+    });
+  };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     setAuthPage("login");
     setActivePage("Dashboard");
     setShowSidebar(false);
+    scrollToTop();
+  };
+
+  const handleAuthPageChange = (page) => {
+    setAuthPage(page);
+    scrollToTop();
   };
 
   const handlePageChange = (page) => {
     setActivePage(page);
     setShowSidebar(false);
+    scrollToTop();
+
+    if (page === "Messages") {
+      setMessagesViewed(true);
+    }
+  };
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+    setActivePage("Dashboard");
+    scrollToTop();
   };
 
   if (!isLoggedIn) {
     if (authPage === "login") {
       return (
         <Login
-          onLogin={() => setIsLoggedIn(true)}
-          onSignupClick={() => setAuthPage("signup")}
-          onRecoverClick={() => setAuthPage("recover")}
+          onLogin={handleLogin}
+          onSignupClick={() => handleAuthPageChange("signup")}
+          onRecoverClick={() => handleAuthPageChange("recover")}
         />
       );
     }
@@ -49,17 +75,17 @@ function App() {
     if (authPage === "signup") {
       return (
         <Signup
-          onSignup={() => setAuthPage("confirm")}
-          onLoginClick={() => setAuthPage("login")}
+          onSignup={() => handleAuthPageChange("confirm")}
+          onLoginClick={() => handleAuthPageChange("login")}
         />
       );
     }
 
     if (authPage === "recover") {
-      return <Recover onLoginClick={() => setAuthPage("login")} />;
+      return <Recover onLoginClick={() => handleAuthPageChange("login")} />;
     }
 
-    return <Confirm onGoHome={() => setAuthPage("login")} />;
+    return <Confirm onGoHome={() => handleAuthPageChange("login")} />;
   }
 
   return (
@@ -70,6 +96,7 @@ function App() {
             activePage={activePage}
             setActivePage={handlePageChange}
             onLogout={handleLogout}
+            messagesViewed={messagesViewed}
           />
         </div>
 
@@ -85,6 +112,7 @@ function App() {
                 activePage={activePage}
                 setActivePage={handlePageChange}
                 onLogout={handleLogout}
+                messagesViewed={messagesViewed}
               />
             </div>
           </div>
@@ -104,15 +132,15 @@ function App() {
 
           {activePage === "Dashboard" && <Dashboard />}
           {activePage === "Invoice" && (
-            <InvoiceList setActivePage={setActivePage} />
+            <InvoiceList setActivePage={handlePageChange} />
           )}
           {activePage === "Schedule" && (
-            <ScheduleList setActivePage={setActivePage} />
+            <ScheduleList setActivePage={handlePageChange} />
           )}
           {activePage === "Board" && <BoardList />}
           {activePage === "Analytics" && <CustomerList />}
           {activePage === "Calendar" && (
-            <CalendarPage setActivePage={setActivePage} />
+            <CalendarPage setActivePage={handlePageChange} />
           )}
           {activePage === "TaskList" && <TaskList />}
           {activePage === "CreateInvoice" && <CreateInvoice />}

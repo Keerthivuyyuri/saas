@@ -20,7 +20,12 @@ const menuItems = [
   { name: "Settings", icon: Settings },
 ];
 
-export default function Sidebar({ activePage, setActivePage, onLogout }) {
+export default function Sidebar({
+  activePage,
+  setActivePage,
+  onLogout,
+  messagesViewed,
+}) {
   return (
     <aside className="w-[220px] h-full bg-white flex flex-col py-6 lg:py-8">
       <div className="flex items-center gap-3 px-6 lg:px-8 mb-8 lg:mb-10">
@@ -48,14 +53,14 @@ export default function Sidebar({ activePage, setActivePage, onLogout }) {
               <Icon size={20} />
               <span>{item.name}</span>
 
-              {item.name === "Messages" && (
+              {item.name === "Messages" && !messagesViewed && (
                 <span className="ml-auto text-[10px] text-red-500">49</span>
               )}
             </button>
           );
         })}
       </nav>
-
+      
       <div className="mx-5 lg:mx-6 mb-6 lg:mb-8 bg-[#EEF2FF] rounded-3xl h-[130px] lg:h-[140px] relative flex flex-col items-center justify-end pb-5">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[2px] h-[35px] bg-[#7DA2FF]" />
 
