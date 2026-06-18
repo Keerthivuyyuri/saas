@@ -18,45 +18,17 @@ const timeRows = [
 ];
 
 const tasks = [
-  {
-    title: "Graphic Design",
-    top: 28,
-    left: 35,
-    width: 430,
-    checked: false,
-    priority: "Low",
-  },
-  {
-    title: "Dashboard Design",
-    top: 155,
-    left: 125,
-    width: 430,
-    checked: true,
-    priority: "High",
-  },
-  {
-    title: "Logo Design",
-    top: 280,
-    left: 35,
-    width: 430,
-    checked: true,
-    priority: "High",
-  },
-  {
-    title: "Web Design",
-    top: 405,
-    left: 265,
-    width: 430,
-    checked: true,
-    priority: "High",
-  },
+  { title: "Graphic Design", top: 28, left: 35, width: 430, checked: false, priority: "Low" },
+  { title: "Dashboard Design", top: 155, left: 125, width: 430, checked: true, priority: "High" },
+  { title: "Logo Design", top: 280, left: 35, width: 430, checked: true, priority: "High" },
+  { title: "Web Design", top: 405, left: 265, width: 430, checked: true, priority: "High" },
 ];
 
 export default function TimelineTask() {
   return (
-    <div className="bg-[#fafbff] min-h-screen px-4 sm:px-6 lg:px-8 py-6 lg:py-8 overflow-x-hidden">
+    <div className="bg-[#fafbff] dark:bg-gray-900 min-h-screen px-4 sm:px-6 lg:px-8 py-6 lg:py-8 overflow-x-hidden">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-7">
-        <h1 className="text-[22px] sm:text-[24px] font-bold text-[#111139]">
+        <h1 className="text-[22px] sm:text-[24px] font-bold text-[#111139] dark:text-white">
           Task Preview
         </h1>
 
@@ -67,11 +39,11 @@ export default function TimelineTask() {
       </div>
 
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-7">
-        <div className="flex bg-white rounded-lg overflow-x-auto w-fit max-w-full">
-          <button className="px-6 py-3 text-sm text-[#111139] whitespace-nowrap">
+        <div className="flex bg-white dark:bg-gray-800 rounded-lg overflow-x-auto w-fit max-w-full">
+          <button className="px-6 py-3 text-sm text-[#111139] dark:text-white whitespace-nowrap">
             List
           </button>
-          <button className="px-6 py-3 text-sm text-[#111139] whitespace-nowrap">
+          <button className="px-6 py-3 text-sm text-[#111139] dark:text-white whitespace-nowrap">
             Board
           </button>
           <button className="px-6 py-3 bg-[#5D5FEF] text-white text-sm whitespace-nowrap">
@@ -79,13 +51,13 @@ export default function TimelineTask() {
           </button>
         </div>
 
-        <button className="w-full sm:w-[170px] h-[42px] bg-white rounded-lg text-sm text-[#555a7b]">
+        <button className="w-full sm:w-[170px] h-[42px] bg-white dark:bg-gray-800 rounded-lg text-sm text-[#555a7b] dark:text-gray-200">
           December&nbsp; 2021
         </button>
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-[210px_1fr] gap-6 lg:gap-8">
-        <div className="bg-white rounded-xl p-5 xl:h-[610px]">
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-5 xl:h-[610px]">
           <div className="grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-1 gap-3">
             {["To Do", "Doing", "Done"].map((item, index) => (
               <button
@@ -93,7 +65,7 @@ export default function TimelineTask() {
                 className={`w-full h-[42px] rounded-lg flex items-center justify-between px-5 text-sm ${
                   index === 0
                     ? "bg-[#5D5FEF] text-white"
-                    : "bg-white border border-[#eef0f7] text-[#111139]"
+                    : "bg-white dark:bg-gray-900 border border-[#eef0f7] dark:border-gray-700 text-[#111139] dark:text-gray-200"
                 }`}
               >
                 {item}
@@ -103,7 +75,7 @@ export default function TimelineTask() {
           </div>
         </div>
 
-        <div className="bg-white rounded-xl p-4 sm:p-5 xl:h-[610px] overflow-x-auto">
+        <div className="bg-white dark:bg-gray-800 rounded-xl p-4 sm:p-5 xl:h-[610px] overflow-x-auto">
           <div className="min-w-[850px]">
             <div className="ml-[70px] flex items-center justify-between h-[45px] mb-2">
               {dates.map((date, index) => (
@@ -112,7 +84,7 @@ export default function TimelineTask() {
                   className={`w-[38px] h-[38px] flex items-center justify-center text-sm font-medium ${
                     date === "02"
                       ? "bg-[#5D5FEF] text-white"
-                      : "text-[#555a7b]"
+                      : "text-[#555a7b] dark:text-gray-300"
                   }`}
                 >
                   {date}
@@ -124,9 +96,9 @@ export default function TimelineTask() {
               {timeRows.map((time) => (
                 <div
                   key={time}
-                  className="h-[58px] border-t border-[#eef0f7] relative"
+                  className="h-[58px] border-t border-[#eef0f7] dark:border-gray-600 relative"
                 >
-                  <span className="absolute left-0 top-[-8px] text-[10px] text-gray-400">
+                  <span className="absolute left-0 top-[-8px] text-[10px] text-gray-400 dark:text-gray-300 bg-white dark:bg-gray-800 pr-2">
                     {time}
                   </span>
                 </div>
@@ -135,7 +107,7 @@ export default function TimelineTask() {
               {tasks.map((task, index) => (
                 <div
                   key={index}
-                  className="absolute h-[54px] bg-white border border-[#edf0f7] rounded-xl shadow-sm flex items-center px-4"
+                  className="absolute h-[54px] bg-white dark:bg-gray-900 border border-[#edf0f7] dark:border-gray-700 rounded-xl shadow-sm flex items-center px-4"
                   style={{
                     top: `${task.top}px`,
                     left: `${task.left + 70}px`,
@@ -150,12 +122,10 @@ export default function TimelineTask() {
                           : "border-gray-400"
                       }`}
                     >
-                      {task.checked && (
-                        <Check size={13} className="text-white" />
-                      )}
+                      {task.checked && <Check size={13} className="text-white" />}
                     </div>
 
-                    <p className="text-sm font-semibold text-[#111139] whitespace-nowrap">
+                    <p className="text-sm font-semibold text-[#111139] dark:text-white whitespace-nowrap">
                       {task.title}
                     </p>
                   </div>
@@ -183,9 +153,7 @@ export default function TimelineTask() {
 
                   <span
                     className={`px-4 py-2 rounded-full text-xs text-white ${
-                      task.priority === "Low"
-                        ? "bg-[#ff6b7a]"
-                        : "bg-[#22c7d9]"
+                      task.priority === "Low" ? "bg-[#ff6b7a]" : "bg-[#22c7d9]"
                     }`}
                   >
                     {task.priority}
@@ -195,10 +163,7 @@ export default function TimelineTask() {
                     On Track
                   </span>
 
-                  <MoreHorizontal
-                    size={18}
-                    className="text-gray-400 ml-auto"
-                  />
+                  <MoreHorizontal size={18} className="text-gray-400 ml-auto" />
                 </div>
               ))}
             </div>
@@ -206,7 +171,7 @@ export default function TimelineTask() {
         </div>
       </div>
 
-      <p className="xl:hidden mt-4 text-xs text-gray-400">
+      <p className="xl:hidden mt-4 text-xs text-gray-400 dark:text-gray-300">
         Swipe horizontally to view full timeline.
       </p>
     </div>

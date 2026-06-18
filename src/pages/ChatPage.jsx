@@ -98,7 +98,7 @@ export default function ChatPage() {
                   onClick={() => setSelectedUser(user)}
                   className={`flex gap-4 p-4 rounded-lg border-b last:border-b-0 cursor-pointer ${
                     selectedUser.name === user.name
-                      ? "bg-[#f4f3ff]"
+                      ? "bg-[#5D5FEF]"
                       : "bg-white"
                   }`}
                 >

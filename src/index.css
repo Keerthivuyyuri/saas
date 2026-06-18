@@ -1,9 +1,65 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-body {
-  margin: 0;
-  font-family: Inter, Arial, sans-serif;
-  background: #e5e5e5;
+.dark .bg-\[\#fafbff\] {
+  background-color: #111827 !important;
+}
+
+.dark .bg-white {
+  background-color: #1f2937 !important;
+}
+
+.dark .text-\[\#111139\] {
+  color: white !important;
+}
+
+.dark .text-gray-500,
+.dark .text-gray-400 {
+  color: #d1d5db !important;
+}
+
+.dark input,
+.dark select,
+.dark textarea {
+  background-color: #374151 !important;
+  color: white !important;
+}
+
+.dark table {
+  color: white;
+}
+
+.dark th,
+.dark td {
+  color: white;
+} */
+ @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.dark .bg-\[\#fafbff\] {
+  background-color: #111827 !important;
+}
+
+.dark .bg-white {
+  background-color: #1f2937 !important;
+}
+
+.dark .text-\[\#111139\] {
+  color: white !important;
+}
+
+.dark .text-gray-500,
+.dark .text-gray-400 {
+  color: #d1d5db !important;
+}
+
+.dark table {
+  color: white;
+}
+
+.dark th,
+.dark td {
+  color: white !important;
 }

@@ -1,5 +1,10 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Menu, X } from "lucide-react";
+import { ToastContainer } from "react-toastify";
+import { ReactLenis } from "lenis/react";
+
+import "react-toastify/dist/ReactToastify.css";
+import "lenis/dist/lenis.css";
 
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -19,23 +24,36 @@ import ChatPage from "./pages/ChatPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem("isLoggedIn") === "true"
+    localStorage.getItem("isLoggedIn") === "true",
   );
 
   const [authPage, setAuthPage] = useState("login");
-
   const [activePage, setActivePage] = useState(
-    localStorage.getItem("activePage") || "Dashboard"
+    localStorage.getItem("activePage") || "Dashboard",
   );
-
   const [showSidebar, setShowSidebar] = useState(false);
-
   const [messagesViewed, setMessagesViewed] = useState(
-    localStorage.getItem("messagesViewed") === "true"
+    localStorage.getItem("messagesViewed") === "true",
   );
+  const [darkMode, setDarkMode] = useState(
+    localStorage.getItem("theme") === "dark",
+  );
+
+  const mainRef = useRef(null);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    if (mainRef.current) {
+      mainRef.current.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  const toggleDarkMode = () => {
+    const newTheme = !darkMode;
+    setDarkMode(newTheme);
+    localStorage.setItem("theme", newTheme ? "dark" : "light");
   };
 
   const handleLogout = () => {
@@ -59,7 +77,6 @@ function App() {
   const handlePageChange = (page) => {
     setActivePage(page);
     localStorage.setItem("activePage", page);
-
     setShowSidebar(false);
     scrollToTop();
 
@@ -80,93 +97,123 @@ function App() {
   };
 
   if (!isLoggedIn) {
-    if (authPage === "login") {
-      return (
-        <Login
-          onLogin={handleLogin}
-          onSignupClick={() => handleAuthPageChange("signup")}
-          onRecoverClick={() => handleAuthPageChange("recover")}
-        />
-      );
-    }
+    return (
+      <ReactLenis root>
+        <div className="min-h-screen">
+          {authPage === "login" && (
+            <Login
+              onLogin={handleLogin}
+              onSignupClick={() => handleAuthPageChange("signup")}
+              onRecoverClick={() => handleAuthPageChange("recover")}
+            />
+          )}
 
-    if (authPage === "signup") {
-      return (
-        <Signup
-          onSignup={() => handleAuthPageChange("confirm")}
-          onLoginClick={() => handleAuthPageChange("login")}
-        />
-      );
-    }
+          {authPage === "signup" && (
+            <Signup
+              onSignup={() => handleAuthPageChange("confirm")}
+              onLoginClick={() => handleAuthPageChange("login")}
+            />
+          )}
 
-    if (authPage === "recover") {
-      return <Recover onLoginClick={() => handleAuthPageChange("login")} />;
-    }
+          {authPage === "recover" && (
+            <Recover onLoginClick={() => handleAuthPageChange("login")} />
+          )}
 
-    return <Confirm onGoHome={() => handleAuthPageChange("login")} />;
+          {authPage === "confirm" && (
+            <Confirm onGoHome={() => handleAuthPageChange("login")} />
+          )}
+
+          <ToastContainer
+            position="top-right"
+            autoClose={2000}
+            theme="colored"
+          />
+        </div>
+      </ReactLenis>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-[#e5e5e5] p-2 sm:p-4 lg:p-5">
-      <div className="max-w-[1500px] mx-auto bg-[#fafbff] flex min-h-screen relative overflow-hidden">
-        <div className="hidden lg:block">
-          <Sidebar
-            activePage={activePage}
-            setActivePage={handlePageChange}
-            onLogout={handleLogout}
-            messagesViewed={messagesViewed}
-          />
-        </div>
-
-        {showSidebar && (
-          <div className="fixed inset-0 z-50 lg:hidden">
-            <div
-              className="absolute inset-0 bg-black/40"
-              onClick={() => setShowSidebar(false)}
-            />
-
-            <div className="absolute left-0 top-0 h-full bg-white">
+    <ReactLenis root>
+      <div className={darkMode ? "dark min-h-screen" : "min-h-screen"}>
+        <div className="min-h-screen bg-[#e5e5e5] dark:bg-gray-950 p-2 sm:p-4 lg:p-5 overflow-x-hidden">
+          <div className="max-w-[1500px] mx-auto bg-[#fafbff] dark:bg-gray-900 flex h-[calc(100vh-40px)] relative overflow-hidden">
+            <div className="hidden lg:block">
               <Sidebar
                 activePage={activePage}
                 setActivePage={handlePageChange}
                 onLogout={handleLogout}
                 messagesViewed={messagesViewed}
+                darkMode={darkMode}
+                toggleDarkMode={toggleDarkMode}
               />
             </div>
-          </div>
-        )}
 
-        <main className="flex-1 min-w-0">
-          <div className="lg:hidden h-[58px] bg-white flex items-center justify-between px-4 sticky top-0 z-40 border-b">
-            <h2 className="text-lg font-bold text-[#111139]">Base</h2>
+            {showSidebar && (
+              <div className="fixed inset-0 z-50 lg:hidden">
+                <div
+                  className="absolute inset-0 bg-black/40"
+                  onClick={() => setShowSidebar(false)}
+                />
 
-            <button
-              onClick={() => setShowSidebar(!showSidebar)}
-              className="w-10 h-10 rounded-lg bg-[#f6f6f8] flex items-center justify-center"
+                <div className="absolute left-0 top-0 h-full bg-white dark:bg-gray-900">
+                  <Sidebar
+                    activePage={activePage}
+                    setActivePage={handlePageChange}
+                    onLogout={handleLogout}
+                    messagesViewed={messagesViewed}
+                    darkMode={darkMode}
+                    toggleDarkMode={toggleDarkMode}
+                  />
+                </div>
+              </div>
+            )}
+
+            <main
+              ref={mainRef}
+              className="flex-1 min-w-0 h-full overflow-y-auto overflow-x-hidden"
             >
-              {showSidebar ? <X size={20} /> : <Menu size={20} />}
-            </button>
-          </div>
+              <div className="lg:hidden h-[58px] bg-white dark:bg-gray-800 flex items-center justify-between px-4 sticky top-0 z-40 border-b dark:border-gray-700">
+                <h2 className="text-lg font-bold text-[#111139] dark:text-white">
+                  Base
+                </h2>
 
-          {activePage === "Dashboard" && <Dashboard />}
-          {activePage === "Invoice" && (
-            <InvoiceList setActivePage={handlePageChange} />
-          )}
-          {activePage === "Schedule" && (
-            <ScheduleList setActivePage={handlePageChange} />
-          )}
-          {activePage === "Board" && <BoardList />}
-          {activePage === "Analytics" && <CustomerList />}
-          {activePage === "Calendar" && (
-            <CalendarPage setActivePage={handlePageChange} />
-          )}
-          {activePage === "TaskList" && <TaskList />}
-          {activePage === "CreateInvoice" && <CreateInvoice />}
-          {activePage === "Settings" && <TimelineTask />}
-          {activePage === "Messages" && <ChatPage />}
-        </main>
+                <button
+                  type="button"
+                  onClick={() => setShowSidebar(!showSidebar)}
+                  className="w-10 h-10 rounded-lg bg-[#f6f6f8] dark:bg-gray-700 flex items-center justify-center"
+                >
+                  {showSidebar ? (
+                    <X size={20} className="dark:text-white" />
+                  ) : (
+                    <Menu size={20} className="dark:text-white" />
+                  )}
+                </button>
+              </div>
+
+              {activePage === "Dashboard" && <Dashboard />}
+              {activePage === "Invoice" && (
+                <InvoiceList setActivePage={handlePageChange} />
+              )}
+              {activePage === "Schedule" && (
+                <ScheduleList setActivePage={handlePageChange} />
+              )}
+              {activePage === "Board" && <BoardList />}
+              {activePage === "Analytics" && <CustomerList />}
+              {activePage === "Calendar" && (
+                <CalendarPage setActivePage={handlePageChange} />
+              )}
+              {activePage === "TaskList" && <TaskList />}
+              {activePage === "CreateInvoice" && <CreateInvoice />}
+              {activePage === "Settings" && <TimelineTask />}
+              {activePage === "Messages" && <ChatPage />}
+            </main>
+          </div>
+        </div>
+
+        <ToastContainer position="top-right" autoClose={2000} theme="colored" />
       </div>
-    </div>
+    </ReactLenis>
   );
 }
 

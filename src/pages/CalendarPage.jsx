@@ -373,10 +373,6 @@ function MonthView({ selectedYear, selectedMonth }) {
               {item.currentMonth && item.day === 21 && (
                 <Event color="bg-[#E941D6]" text="friend's Birthday" />
               )}
-
-              {item.currentMonth && item.day === 25 && (
-                <Event color="bg-[#20AFCB]" text="Christmas Day" />
-              )}
             </div>
           );
         })}
@@ -552,9 +548,9 @@ function DayView() {
         {times.map((time) => (
           <div
             key={time}
-            className="h-[42px] border-t border-[#eef0f7] relative"
+            className="h-[42px] border-t border-[#eef0f7] dark:border-gray-600 relative"
           >
-            <span className="absolute left-0 top-[-8px] text-[10px] text-gray-400">
+            <span className="absolute left-0 top-[-8px] text-[10px] text-gray-400 dark:text-gray-300 bg-white dark:bg-gray-800 pr-2">
               {time}
             </span>
           </div>
@@ -563,7 +559,7 @@ function DayView() {
         {dayEvents.map((event, index) => (
           <div
             key={index}
-            className={`absolute h-[34px] rounded-lg ${event.color} text-white text-xs flex items-center justify-center`}
+            className={`absolute h-[34px] rounded-lg ${event.color} text-white text-xs flex items-center justify-center shadow-sm`}
             style={{
               top: `${event.top}px`,
               left: `${event.left}px`,
