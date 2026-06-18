@@ -23,9 +23,16 @@ function App() {
   );
 
   const [authPage, setAuthPage] = useState("login");
-  const [activePage, setActivePage] = useState("Dashboard");
+
+  const [activePage, setActivePage] = useState(
+    localStorage.getItem("activePage") || "Dashboard"
+  );
+
   const [showSidebar, setShowSidebar] = useState(false);
-  const [messagesViewed, setMessagesViewed] = useState(false);
+
+  const [messagesViewed, setMessagesViewed] = useState(
+    localStorage.getItem("messagesViewed") === "true"
+  );
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -33,10 +40,13 @@ function App() {
 
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("activePage");
+    localStorage.removeItem("messagesViewed");
 
     setIsLoggedIn(false);
     setAuthPage("login");
     setActivePage("Dashboard");
+    setMessagesViewed(false);
     setShowSidebar(false);
     scrollToTop();
   };
@@ -48,16 +58,20 @@ function App() {
 
   const handlePageChange = (page) => {
     setActivePage(page);
+    localStorage.setItem("activePage", page);
+
     setShowSidebar(false);
     scrollToTop();
 
     if (page === "Messages") {
       setMessagesViewed(true);
+      localStorage.setItem("messagesViewed", "true");
     }
   };
 
   const handleLogin = () => {
     localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("activePage", "Dashboard");
 
     setIsLoggedIn(true);
     setActivePage("Dashboard");
