@@ -6,6 +6,7 @@ import loginImage from "../assets/office.png";
 export default function Login({ onLogin, onSignupClick, onRecoverClick }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
@@ -28,6 +29,13 @@ export default function Login({ onLogin, onSignupClick, onRecoverClick }) {
       return;
     }
 
+    /*
+      Do not save login status in localStorage.
+      So when page refreshes, App.js starts from:
+      const [isLoggedIn, setIsLoggedIn] = useState(false);
+      and user will be logged out.
+    */
+
     onLogin();
   };
 
@@ -48,12 +56,18 @@ export default function Login({ onLogin, onSignupClick, onRecoverClick }) {
           </h1>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full mb-6">
-            <button className="h-[44px] bg-[#f6f6f8] rounded-lg text-sm flex items-center justify-center gap-2">
+            <button
+              type="button"
+              className="h-[44px] bg-[#f6f6f8] rounded-lg text-sm flex items-center justify-center gap-2"
+            >
               <FaGoogle className="text-red-500" />
               Google
             </button>
 
-            <button className="h-[44px] bg-[#f6f6f8] rounded-lg text-sm flex items-center justify-center gap-2">
+            <button
+              type="button"
+              className="h-[44px] bg-[#f6f6f8] rounded-lg text-sm flex items-center justify-center gap-2"
+            >
               <FaFacebookF className="text-blue-600" />
               Facebook
             </button>
@@ -68,6 +82,7 @@ export default function Login({ onLogin, onSignupClick, onRecoverClick }) {
           <div className="w-full mb-5">
             <label className="text-sm text-[#111139]">Email Address</label>
             <input
+              type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="example@gmail.com"
@@ -104,7 +119,11 @@ export default function Login({ onLogin, onSignupClick, onRecoverClick }) {
 
           <div className="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-8">
             <label className="text-sm text-[#111139] flex items-center gap-2">
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
               Remember me
             </label>
 
@@ -118,6 +137,7 @@ export default function Login({ onLogin, onSignupClick, onRecoverClick }) {
           </div>
 
           <button
+            type="button"
             onClick={handleLogin}
             className="w-full h-[48px] bg-[#5D5FEF] text-white rounded-lg text-sm mb-8"
           >
