@@ -66,11 +66,12 @@ export default function ChatPage() {
             </button>
           </div>
 
-          <div className="h-[45px] bg-[#f6f6f8] rounded-lg flex items-center gap-3 px-4 mb-6">
-            <Search size={15} className="text-gray-400" />
+          <div className="h-[45px] bg-[#f6f6f8] dark:bg-gray-800 rounded-lg flex items-center gap-3 px-4 mb-6">
+            <Search size={15} className="!text-gray-400 dark:!text-gray-400" />
+
             <input
               placeholder="Search"
-              className="bg-transparent outline-none text-sm text-gray-400 w-full min-w-0"
+              className="bg-transparent outline-none text-sm text-gray-500 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-400 w-full min-w-0"
             />
           </div>
 
@@ -158,16 +159,25 @@ export default function ChatPage() {
                 </div>
 
                 <div className="flex gap-3 sm:gap-4">
-                  <button className="w-10 h-10 rounded-full bg-[#f6f6f8] flex items-center justify-center">
-                    <Phone size={17} className="text-gray-500" />
+                  <button className="w-10 h-10 rounded-full bg-[#f6f6f8] dark:bg-gray-800 flex items-center justify-center">
+                    <Phone
+                      size={17}
+                      className="!text-gray-400 dark:!text-gray-400"
+                    />
                   </button>
 
-                  <button className="w-10 h-10 rounded-full bg-[#f6f6f8] flex items-center justify-center">
-                    <Video size={17} className="text-gray-500" />
+                  <button className="w-10 h-10 rounded-full bg-[#f6f6f8] dark:bg-gray-800 flex items-center justify-center">
+                    <Video
+                      size={17}
+                      className="!text-gray-400 dark:!text-gray-400"
+                    />
                   </button>
 
-                  <button className="w-10 h-10 rounded-full bg-[#f6f6f8] flex items-center justify-center">
-                    <MoreVertical size={17} className="text-gray-500" />
+                  <button className="w-10 h-10 rounded-full bg-[#f6f6f8] dark:bg-gray-800 flex items-center justify-center">
+                    <MoreVertical
+                      size={17}
+                      className="!text-gray-400 dark:!text-gray-400"
+                    />
                   </button>
                 </div>
               </div>

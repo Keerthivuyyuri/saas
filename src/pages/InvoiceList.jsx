@@ -12,16 +12,86 @@ import {
 } from "lucide-react";
 
 const invoices = [
-  ["#876364", "Arrora gaur", "arroragaur@gmail.com", "12 Dec, 2020", "Complete", true],
-  ["#876123", "James Mullican", "jamesmullican@gmail.com", "10 Dec, 2020", "Pending", true],
-  ["#876213", "Robert Bacins", "robertbacins@gmail.com", "09 Dec, 2020", "Complete", false],
-  ["#876987", "Bethany Jackson", "bethanyjackson@gmail.com", "09 Dec, 2020", "Cancel", false],
-  ["#871345", "Anne Jacob", "annejacob@gmail.com", "10 Dec, 2020", "Complete", false],
-  ["#872345", "Bethany jackson", "bethanyjackson@gmail.com", "10 Dec, 2020", "Pending", true],
-  ["#872346", "James Mullican", "jamesmullican@gmail.com", "10 Dec, 2020", "Complete", false],
-  ["#873245", "Jhon Deo", "jhondeo32@gmail.com", "08 Dec, 2020", "Complete", true],
-  ["#876364", "Bethany jackson", "bethanyjackson@gmail.com", "02 Dec, 2020", "Cancel", true],
-  ["#878769", "James Mullican", "jamesmullican@gmail.com", "01 Dec, 2020", "Pending", false],
+  [
+    "#876364",
+    "Arrora gaur",
+    "arroragaur@gmail.com",
+    "12 Dec, 2020",
+    "Complete",
+    true,
+  ],
+  [
+    "#876123",
+    "James Mullican",
+    "jamesmullican@gmail.com",
+    "10 Dec, 2020",
+    "Pending",
+    true,
+  ],
+  [
+    "#876213",
+    "Robert Bacins",
+    "robertbacins@gmail.com",
+    "09 Dec, 2020",
+    "Complete",
+    false,
+  ],
+  [
+    "#876987",
+    "Bethany Jackson",
+    "bethanyjackson@gmail.com",
+    "09 Dec, 2020",
+    "Cancel",
+    false,
+  ],
+  [
+    "#871345",
+    "Anne Jacob",
+    "annejacob@gmail.com",
+    "10 Dec, 2020",
+    "Complete",
+    false,
+  ],
+  [
+    "#872345",
+    "Bethany jackson",
+    "bethanyjackson@gmail.com",
+    "10 Dec, 2020",
+    "Pending",
+    true,
+  ],
+  [
+    "#872346",
+    "James Mullican",
+    "jamesmullican@gmail.com",
+    "10 Dec, 2020",
+    "Complete",
+    false,
+  ],
+  [
+    "#873245",
+    "Jhon Deo",
+    "jhondeo32@gmail.com",
+    "08 Dec, 2020",
+    "Complete",
+    true,
+  ],
+  [
+    "#876364",
+    "Bethany jackson",
+    "bethanyjackson@gmail.com",
+    "02 Dec, 2020",
+    "Cancel",
+    true,
+  ],
+  [
+    "#878769",
+    "James Mullican",
+    "jamesmullican@gmail.com",
+    "01 Dec, 2020",
+    "Pending",
+    false,
+  ],
 ];
 
 const avatars = [
@@ -54,13 +124,17 @@ export default function InvoiceList({ setActivePage }) {
         </h1>
 
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-5">
-          <div className="w-full sm:w-[240px] h-[44px] bg-white rounded-xl flex items-center px-5">
+          <div className="w-full sm:w-[240px] h-[44px] bg-white dark:bg-gray-800 rounded-xl flex items-center px-5">
             <input
               type="text"
               placeholder="Search"
-              className="flex-1 outline-none text-sm text-gray-400 min-w-0"
+              className="flex-1 outline-none text-sm text-gray-500 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-400 bg-transparent min-w-0"
             />
-            <Search size={18} className="text-gray-400" />
+
+            <Search
+              size={18}
+              className="!text-gray-400 dark:!text-gray-400 flex-shrink-0"
+            />
           </div>
 
           <button
@@ -135,9 +209,7 @@ export default function InvoiceList({ setActivePage }) {
                 />
 
                 <button
-                  onClick={() =>
-                    setOpenMenu(openMenu === index ? null : index)
-                  }
+                  onClick={() => setOpenMenu(openMenu === index ? null : index)}
                   className="relative"
                 >
                   <MoreHorizontal size={20} className="text-gray-400" />

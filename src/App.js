@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { ToastContainer } from "react-toastify";
 import { ReactLenis } from "lenis/react";
@@ -24,31 +24,38 @@ import ChatPage from "./pages/ChatPage";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem("isLoggedIn") === "true",
+    localStorage.getItem("isLoggedIn") === "true"
   );
 
   const [authPage, setAuthPage] = useState("login");
   const [activePage, setActivePage] = useState(
-    localStorage.getItem("activePage") || "Dashboard",
+    localStorage.getItem("activePage") || "Dashboard"
   );
   const [showSidebar, setShowSidebar] = useState(false);
   const [messagesViewed, setMessagesViewed] = useState(
-    localStorage.getItem("messagesViewed") === "true",
+    localStorage.getItem("messagesViewed") === "true"
   );
   const [darkMode, setDarkMode] = useState(
-    localStorage.getItem("theme") === "dark",
+    localStorage.getItem("theme") === "dark"
   );
 
   const mainRef = useRef(null);
 
   const scrollToTop = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+
     if (mainRef.current) {
       mainRef.current.scrollTo({
         top: 0,
-        behavior: "smooth",
+        left: 0,
+        behavior: "auto",
       });
     }
   };
+
+  useEffect(() => {
+    scrollToTop();
+  }, [authPage, activePage, isLoggedIn]);
 
   const toggleDarkMode = () => {
     const newTheme = !darkMode;
@@ -66,19 +73,16 @@ function App() {
     setActivePage("Dashboard");
     setMessagesViewed(false);
     setShowSidebar(false);
-    scrollToTop();
   };
 
   const handleAuthPageChange = (page) => {
     setAuthPage(page);
-    scrollToTop();
   };
 
   const handlePageChange = (page) => {
     setActivePage(page);
     localStorage.setItem("activePage", page);
     setShowSidebar(false);
-    scrollToTop();
 
     if (page === "Messages") {
       setMessagesViewed(true);
@@ -93,52 +97,56 @@ function App() {
     setIsLoggedIn(true);
     setActivePage("Dashboard");
     setShowSidebar(false);
-    scrollToTop();
   };
 
   if (!isLoggedIn) {
     return (
-      <ReactLenis root>
-        <div className="min-h-screen">
-          {authPage === "login" && (
-            <Login
-              onLogin={handleLogin}
-              onSignupClick={() => handleAuthPageChange("signup")}
-              onRecoverClick={() => handleAuthPageChange("recover")}
-            />
-          )}
-
-          {authPage === "signup" && (
-            <Signup
-              onSignup={() => handleAuthPageChange("confirm")}
-              onLoginClick={() => handleAuthPageChange("login")}
-            />
-          )}
-
-          {authPage === "recover" && (
-            <Recover onLoginClick={() => handleAuthPageChange("login")} />
-          )}
-
-          {authPage === "confirm" && (
-            <Confirm onGoHome={() => handleAuthPageChange("login")} />
-          )}
-
-          <ToastContainer
-            position="top-right"
-            autoClose={2000}
-            theme="colored"
+      <div className="min-h-screen overflow-y-auto">
+        {authPage === "login" && (
+          <Login
+            onLogin={handleLogin}
+            onSignupClick={() => handleAuthPageChange("signup")}
+            onRecoverClick={() => handleAuthPageChange("recover")}
           />
-        </div>
-      </ReactLenis>
+        )}
+
+        {authPage === "signup" && (
+          <Signup
+            onSignup={() => handleAuthPageChange("confirm")}
+            onLoginClick={() => handleAuthPageChange("login")}
+          />
+        )}
+
+        {authPage === "recover" && (
+          <Recover onLoginClick={() => handleAuthPageChange("login")} />
+        )}
+
+        {authPage === "confirm" && (
+          <Confirm onGoHome={() => handleAuthPageChange("login")} />
+        )}
+
+        <ToastContainer position="top-right" autoClose={2000} theme="colored" />
+      </div>
     );
   }
 
   return (
-    <ReactLenis root>
+    <ReactLenis
+      root
+      options={{
+        smoothWheel: true,
+        syncTouch: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 1,
+        prevent: (node) =>
+          node.classList?.contains("sidebar-scroll") ||
+          node.classList?.contains("main-scroll"),
+      }}
+    >
       <div className={darkMode ? "dark min-h-screen" : "min-h-screen"}>
-        <div className="min-h-screen bg-[#e5e5e5] dark:bg-gray-950 p-2 sm:p-4 lg:p-5 overflow-x-hidden">
+        <div className="min-h-screen bg-[#e5e5e5] dark:bg-gray-950 p-2 sm:p-4 lg:p-5 overflow-hidden">
           <div className="max-w-[1500px] mx-auto bg-[#fafbff] dark:bg-gray-900 flex h-[calc(100vh-40px)] relative overflow-hidden">
-            <div className="hidden lg:block">
+            <div className="hidden lg:block h-full">
               <Sidebar
                 activePage={activePage}
                 setActivePage={handlePageChange}
@@ -171,7 +179,7 @@ function App() {
 
             <main
               ref={mainRef}
-              className="flex-1 min-w-0 h-full overflow-y-auto overflow-x-hidden"
+              className="main-scroll flex-1 min-w-0 h-full overflow-y-auto overflow-x-hidden"
             >
               <div className="lg:hidden h-[58px] bg-white dark:bg-gray-800 flex items-center justify-between px-4 sticky top-0 z-40 border-b dark:border-gray-700">
                 <h2 className="text-lg font-bold text-[#111139] dark:text-white">
