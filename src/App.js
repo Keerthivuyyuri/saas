@@ -98,37 +98,36 @@ function App() {
     setActivePage("Dashboard");
     setShowSidebar(false);
   };
+if (!isLoggedIn) {
+  return (
+    <div className={darkMode ? "dark min-h-screen" : "min-h-screen"}>
+      {authPage === "login" && (
+        <Login
+          onLogin={handleLogin}
+          onSignupClick={() => handleAuthPageChange("signup")}
+          onRecoverClick={() => handleAuthPageChange("recover")}
+        />
+      )}
 
-  if (!isLoggedIn) {
-    return (
-      <div className="min-h-screen overflow-y-auto">
-        {authPage === "login" && (
-          <Login
-            onLogin={handleLogin}
-            onSignupClick={() => handleAuthPageChange("signup")}
-            onRecoverClick={() => handleAuthPageChange("recover")}
-          />
-        )}
+      {authPage === "signup" && (
+        <Signup
+          onSignup={() => handleAuthPageChange("confirm")}
+          onLoginClick={() => handleAuthPageChange("login")}
+        />
+      )}
 
-        {authPage === "signup" && (
-          <Signup
-            onSignup={() => handleAuthPageChange("confirm")}
-            onLoginClick={() => handleAuthPageChange("login")}
-          />
-        )}
+      {authPage === "recover" && (
+        <Recover onLoginClick={() => handleAuthPageChange("login")} />
+      )}
 
-        {authPage === "recover" && (
-          <Recover onLoginClick={() => handleAuthPageChange("login")} />
-        )}
+      {authPage === "confirm" && (
+        <Confirm onGoHome={() => handleAuthPageChange("login")} />
+      )}
 
-        {authPage === "confirm" && (
-          <Confirm onGoHome={() => handleAuthPageChange("login")} />
-        )}
-
-        <ToastContainer position="top-right" autoClose={2000} theme="colored" />
-      </div>
-    );
-  }
+      <ToastContainer position="top-right" autoClose={2000} theme="colored" />
+    </div>
+  );
+}
 
   return (
     <ReactLenis
